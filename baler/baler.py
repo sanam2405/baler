@@ -20,6 +20,9 @@ import numpy as np
 
 from .modules import helper
 
+from carbontracker.tracker import CarbonTracker
+
+
 
 def main():
     """Calls different functions depending on argument parsed in command line.
@@ -39,28 +42,40 @@ def main():
     project_path = os.path.join("workspaces", workspace_name, project_name)
     output_path = os.path.join(project_path, "output")
 
-    if mode == "newProject":
-        helper.create_new_project(workspace_name, project_name, verbose)
-    elif mode == "train":
-        perform_training(output_path, config, verbose)
-    elif mode == "diagnose":
-        perform_diagnostics(output_path, verbose)
-    elif mode == "compress":
-        perform_compression(output_path, config, verbose)
-    elif mode == "decompress":
-        perform_decompression(output_path, config, verbose)
-    elif mode == "plot":
-        perform_plotting(output_path, config, verbose)
-    elif mode == "info":
-        print_info(output_path, config)
-    elif mode == "convert_with_hls4ml":
-        helper.perform_hls4ml_conversion(output_path, config)
-    else:
-        raise NameError(
-            "Baler mode "
-            + mode
-            + " not recognised. Use baler --help to see available modes."
-        )
+    max_epochs = 50
+    tracker = CarbonTracker(epochs=max_epochs)
+
+    # Training loop.
+    for epoch in range(max_epochs):
+        tracker.epoch_start()
+        
+        # Your model training.
+
+
+        if mode == "newProject":
+            helper.create_new_project(workspace_name, project_name, verbose)
+        elif mode == "train":
+            perform_training(output_path, config, verbose)
+        elif mode == "diagnose":
+            perform_diagnostics(output_path, verbose)
+        elif mode == "compress":
+            perform_compression(output_path, config, verbose)
+        elif mode == "decompress":
+            perform_decompression(output_path, config, verbose)
+        elif mode == "plot":
+            perform_plotting(output_path, config, verbose)
+        elif mode == "info":
+            print_info(output_path, config)
+        elif mode == "convert_with_hls4ml":
+            helper.perform_hls4ml_conversion(output_path, config)
+        else:
+            raise NameError(
+                "Baler mode "
+                + mode
+                + " not recognised. Use baler --help to see available modes."
+            )
+    
+        tracker.epoch_end()
 
 
 def perform_training(output_path, config, verbose: bool):
