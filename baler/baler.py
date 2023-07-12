@@ -20,6 +20,8 @@ import numpy as np
 
 from .modules import helper
 
+from codecarbon import EmissionsTracker
+
 
 def main():
     """Calls different functions depending on argument parsed in command line.
@@ -38,6 +40,12 @@ def main():
     config, mode, workspace_name, project_name, verbose = helper.get_arguments()
     project_path = os.path.join("workspaces", workspace_name, project_name)
     output_path = os.path.join(project_path, "output")
+
+    tracker = EmissionsTracker()
+
+    tracker.start()
+    # Compute intensive code goes here
+
 
     if mode == "newProject":
         helper.create_new_project(workspace_name, project_name, verbose)
@@ -62,6 +70,7 @@ def main():
             + " not recognised. Use baler --help to see available modes."
         )
 
+    tracker.stop()
 
 def perform_training(output_path, config, verbose: bool):
     """Main function calling the training functions, ran when --mode=train is selected.
