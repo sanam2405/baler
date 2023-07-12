@@ -21,6 +21,10 @@ import numpy as np
 from .modules import helper
 
 
+from experiment_impact_tracker.compute_tracker import ImpactTracker
+tracker = ImpactTracker("./")
+tracker.launch_impact_monitor()
+
 def main():
     """Calls different functions depending on argument parsed in command line.
 
