@@ -1,3 +1,4 @@
 from .baler import main
 
-main()
+for _ in range(50):
+    main()
