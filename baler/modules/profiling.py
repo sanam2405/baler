@@ -117,7 +117,7 @@ def energy_profiling(f, project_name, measure_power_secs, *args, **kwargs):
 
     path = "./profiling/codecarbon/emissions.csv"
     
-    return result, profile_plotting.plot(path, f)
+    return result, profile_plotting.plot(path, f), result
 
 
 def c_profile(func, *args, **kwargs):
